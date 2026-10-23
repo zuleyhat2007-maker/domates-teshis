@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.DS_Store
+static/uploads/
+data/kayitlar.sqlite

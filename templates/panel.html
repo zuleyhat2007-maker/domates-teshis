@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Performans Paneli · DomatesTeşhis{% endblock %}
+{% block content %}
+<section class="panel-head">
+  <div>
+    <h1>Performans Paneli</h1>
+    <p class="muted">Modellerin test setindeki başarısı, sitede yapılan analizlerin canlı takibi ve sistem kontrolü.</p>
+  </div>
+  <div class="live"><span class="dot"></span><span>Canlı</span><span id="lastUpdate" class="muted small">bağlanıyor…</span></div>
+</section>
+
+<!-- ============ 1. MODEL PERFORMANSI ============ -->
+<section class="block">
+  <div class="block-head">
+    <h2>Model performansı</h2>
+    <p class="muted small" id="testInfo"></p>
+  </div>
+
+  <div class="kpis" id="kpiModel">
+    <div class="kpi"><span>Doğruluk (Accuracy)</span><strong id="kAcc">–</strong><em id="kAccModel"></em></div>
+    <div class="kpi"><span>Kesinlik (Precision)</span><strong id="kPrec">–</strong><em>ağırlıklı ortalama</em></div>
+    <div class="kpi"><span>Duyarlılık (Recall)</span><strong id="kRec">–</strong><em>ağırlıklı ortalama</em></div>
+    <div class="kpi"><span>F1 Skoru</span><strong id="kF1">–</strong><em>ağırlıklı ortalama</em></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><h3>Doğruluk (Accuracy) — model karşılaştırması</h3></div>
+      <div class="chart-box"><canvas id="chAcc"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Tüm metrikler</h3></div>
+      <div class="chart-box"><canvas id="chAll"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><h3>Sınıf bazında F1 skoru</h3></div>
+      <div class="chart-box"><canvas id="chClass"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Karışıklık matrisi</h3>
+        <div class="seg" id="cmTabs"></div>
+      </div>
+      <div id="cm" class="cm"></div>
+      <p class="muted small">Satırlar gerçek sınıf, sütunlar modelin tahmini. Köşegendeki sayılar doğru tahminlerdir.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h3>Model detayları</h3></div>
+    <div class="table-wrap"><table class="tbl" id="modelTable"></table></div>
+  </div>
+</section>
+
+<!-- ============ 2. CANLI İZLEME ============ -->
+<section class="block">
+  <div class="block-head">
+    <h2>Canlı izleme</h2>
+    <p class="muted small">Sitede yapılan analizler. Sayfa her 3 saniyede bir kendini yeniler.</p>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><span>Toplam analiz</span><strong id="sTotal">0</strong></div>
+    <div class="kpi ok"><span>Kabul edilen</span><strong id="sAcc">0</strong></div>
+    <div class="kpi bad"><span>Reddedilen (domates değil)</span><strong id="sRej">0</strong><em id="sRejRate"></em></div>
+    <div class="kpi"><span>Ortalama güven</span><strong id="sConf">–</strong></div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><h3>Son 30 dakika</h3></div>
+      <div class="chart-box"><canvas id="chTimeline"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Teşhis dağılımı</h3></div>
+      <div class="chart-box"><canvas id="chDist"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><h3>Son analizler</h3></div>
+    <div class="table-wrap"><table class="tbl" id="recentTable"></table></div>
+    <p id="recentEmpty" class="muted small">Henüz analiz yapılmadı. <a href="/">Teşhis sayfasından</a> bir fotoğraf yükle.</p>
+  </div>
+</section>
+
+<!-- ============ 3. KONTROL ============ -->
+<section class="block">
+  <div class="block-head">
+    <h2>Sistem kontrolü</h2>
+    <p class="muted small">Buradaki değişiklikler anında Teşhis sayfasına yansır.</p>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head"><h3>Aktif model</h3></div>
+      <p class="muted small">Teşhis sayfasında ana sonucu bu model verir. Diğer modellerin tahminleri karşılaştırma olarak gösterilir.</p>
+      <div id="modelPick" class="model-pick"></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Domates filtresi</h3></div>
+      <p class="muted small">Yüklenen fotoğrafın gerçek domates yapraklarına benzerliği eşiğin altındaysa görüntü reddedilir. Eşiği yükseltmek alakasız görüntüleri daha sıkı reddeder ama farklı zeminde çekilmiş gerçek yaprakları da reddedebilir.</p>
+      <label class="range">
+        <span>Benzerlik eşiği</span>
+        <input type="range" id="rejRange" min="0.30" max="0.90" step="0.01">
+        <b id="rejVal"></b>
+      </label>
+      <p class="muted small">Düşük = daha esnek (daha çok fotoğraf kabul edilir) · Yüksek = daha sıkı</p>
+      <div class="gate-stats">
+        <div><span>Gerçek domates yapraklarının kabul oranı (test)</span><strong id="gAccRate">–</strong></div>
+        <div><span>Alakasız fotoğraf testi (sacma.jpg)</span><strong id="gSacma">–</strong></div>
+      </div>
+      <label class="admin" id="adminRow" hidden>
+        <span>Yönetici şifresi</span>
+        <input type="password" id="adminKey" autocomplete="current-password" placeholder="Ayarları değiştirmek için gerekli">
+      </label>
+      <div class="row-end">
+        <button id="btnReset" class="ghost danger" type="button">Kayıtları sıfırla</button>
+        <button id="btnSave" class="primary" type="button">Kaydet</button>
+      </div>
+      <p id="saveMsg" class="muted small"></p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="{{ url_for('static', filename='panel.js') }}"></script>
+{% endblock %}

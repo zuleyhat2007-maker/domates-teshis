@@ -1,0 +1,230 @@
+{
+  "created": "2026-10-21 16:36",
+  "classes": [
+    "Bacterial Spot",
+    "Healthy",
+    "Septoria",
+    "Target Spot"
+  ],
+  "dataset": {
+    "train": {
+      "Bacterial Spot": 1190,
+      "Healthy": 890,
+      "Septoria": 991,
+      "Target Spot": 786
+    },
+    "val": {
+      "Bacterial Spot": 255,
+      "Healthy": 190,
+      "Septoria": 212,
+      "Target Spot": 168
+    },
+    "test": {
+      "Bacterial Spot": 256,
+      "Healthy": 192,
+      "Septoria": 213,
+      "Target Spot": 169
+    }
+  },
+  "models": {
+    "cnn": {
+      "label": "Özel CNN",
+      "accuracy": 0.7024096385542169,
+      "precision": 0.8396613908002414,
+      "recall": 0.7024096385542169,
+      "f1": 0.6913727963582911,
+      "f1_macro": 0.6720118962669372,
+      "mean_confidence": 0.9370757937431335,
+      "ms_per_image": 1.403749848194196,
+      "per_class": {
+        "Bacterial Spot": {
+          "precision": 0.8581081081081081,
+          "recall": 0.9921875,
+          "f1": 0.9202898550724637,
+          "support": 256
+        },
+        "Healthy": {
+          "precision": 0.9866666666666667,
+          "recall": 0.3854166666666667,
+          "f1": 0.5543071161048689,
+          "support": 192
+        },
+        "Septoria": {
+          "precision": 1.0,
+          "recall": 0.43661971830985913,
+          "f1": 0.6078431372549019,
+          "support": 213
+        },
+        "Target Spot": {
+          "precision": 0.4426229508196721,
+          "recall": 0.9585798816568047,
+          "f1": 0.6056074766355141,
+          "support": 169
+        }
+      },
+      "confusion_matrix": [
+        [
+          254,
+          1,
+          0,
+          1
+        ],
+        [
+          7,
+          74,
+          0,
+          111
+        ],
+        [
+          28,
+          0,
+          93,
+          92
+        ],
+        [
+          7,
+          0,
+          0,
+          162
+        ]
+      ]
+    },
+    "resnet": {
+      "label": "ResNet50",
+      "accuracy": 0.9253012048192771,
+      "precision": 0.9363563549974546,
+      "recall": 0.9253012048192771,
+      "f1": 0.925864635900355,
+      "f1_macro": 0.9204489951770968,
+      "mean_confidence": 0.9653642177581787,
+      "ms_per_image": 8.9388446252427,
+      "per_class": {
+        "Bacterial Spot": {
+          "precision": 0.98,
+          "recall": 0.95703125,
+          "f1": 0.9683794466403162,
+          "support": 256
+        },
+        "Healthy": {
+          "precision": 1.0,
+          "recall": 0.8020833333333334,
+          "f1": 0.8901734104046243,
+          "support": 192
+        },
+        "Septoria": {
+          "precision": 0.9436619718309859,
+          "recall": 0.9436619718309859,
+          "f1": 0.9436619718309859,
+          "support": 213
+        },
+        "Target Spot": {
+          "precision": 0.7887323943661971,
+          "recall": 0.9940828402366864,
+          "f1": 0.8795811518324608,
+          "support": 169
+        }
+      },
+      "confusion_matrix": [
+        [
+          245,
+          0,
+          9,
+          2
+        ],
+        [
+          0,
+          154,
+          2,
+          36
+        ],
+        [
+          5,
+          0,
+          201,
+          7
+        ],
+        [
+          0,
+          0,
+          1,
+          168
+        ]
+      ]
+    },
+    "vgg": {
+      "label": "VGG16",
+      "accuracy": 0.9397590361445783,
+      "precision": 0.9445741865443149,
+      "recall": 0.9397590361445783,
+      "f1": 0.9406644241977348,
+      "f1_macro": 0.9360432170443674,
+      "mean_confidence": 0.9649519920349121,
+      "ms_per_image": 9.195117268736576,
+      "per_class": {
+        "Bacterial Spot": {
+          "precision": 0.9919354838709677,
+          "recall": 0.9609375,
+          "f1": 0.9761904761904762,
+          "support": 256
+        },
+        "Healthy": {
+          "precision": 0.9941860465116279,
+          "recall": 0.890625,
+          "f1": 0.9395604395604396,
+          "support": 192
+        },
+        "Septoria": {
+          "precision": 0.9311926605504587,
+          "recall": 0.9530516431924883,
+          "f1": 0.9419953596287703,
+          "support": 213
+        },
+        "Target Spot": {
+          "precision": 0.8333333333333334,
+          "recall": 0.9467455621301775,
+          "f1": 0.8864265927977839,
+          "support": 169
+        }
+      },
+      "confusion_matrix": [
+        [
+          246,
+          0,
+          6,
+          4
+        ],
+        [
+          0,
+          171,
+          1,
+          20
+        ],
+        [
+          2,
+          0,
+          203,
+          8
+        ],
+        [
+          0,
+          1,
+          8,
+          160
+        ]
+      ]
+    }
+  },
+  "gate": {
+    "k": 5,
+    "reference_images": 1200,
+    "default_percentile": 2.0,
+    "default_threshold": 0.7311742615699768,
+    "test_accept_rate": 0.9867469879518073,
+    "val_score_range": [
+      0.3680352568626404,
+      0.9104862213134766
+    ],
+    "sacma_score": 0.32129502296447754,
+    "sacma_rejected": true
+  }
+}

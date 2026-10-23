@@ -1,0 +1,4 @@
+,Bacterial Spot,Healthy,Septoria,Target Spot,Tahmin,Güven
+cnn_model,0.0,0.0,1.0,0.0,Septoria,1.0
+resnet_model,0.0,0.0,1.0,0.0,Septoria,1.0
+vgg_model,0.0,1.0,0.0,0.0,Healthy,1.0

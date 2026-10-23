@@ -1,0 +1,8 @@
+tensorflow==2.16.2
+flask
+pillow
+numpy
+scikit-learn
+kagglehub
+# Apple Silicon Mac'te GPU hızlandırma için (isteğe bağlı):
+# tensorflow-metal==1.1.0
